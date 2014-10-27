@@ -14,6 +14,8 @@
 		EEF6A64719FE4C4800136F00 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EEF6A64619FE4C4800136F00 /* Images.xcassets */; };
 		EEF6A64A19FE4C4800136F00 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = EEF6A64819FE4C4800136F00 /* LaunchScreen.xib */; };
 		EEF6A65619FE4C4800136F00 /* YJMenuDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EEF6A65519FE4C4800136F00 /* YJMenuDemoTests.m */; };
+		EEF6A66419FE4C7500136F00 /* YJMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = EEF6A66119FE4C7500136F00 /* YJMenu.m */; };
+		EEF6A66519FE4C7500136F00 /* YJMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EEF6A66319FE4C7500136F00 /* YJMenuItem.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,10 @@
 		EEF6A64F19FE4C4800136F00 /* YJMenuDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YJMenuDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEF6A65419FE4C4800136F00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EEF6A65519FE4C4800136F00 /* YJMenuDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YJMenuDemoTests.m; sourceTree = "<group>"; };
+		EEF6A66019FE4C7500136F00 /* YJMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJMenu.h; sourceTree = "<group>"; };
+		EEF6A66119FE4C7500136F00 /* YJMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJMenu.m; sourceTree = "<group>"; };
+		EEF6A66219FE4C7500136F00 /* YJMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YJMenuItem.h; sourceTree = "<group>"; };
+		EEF6A66319FE4C7500136F00 /* YJMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YJMenuItem.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +87,7 @@
 		EEF6A63819FE4C4800136F00 /* YJMenuDemo */ = {
 			isa = PBXGroup;
 			children = (
+				EEF6A65F19FE4C7500136F00 /* YJMenu */,
 				EEF6A63D19FE4C4800136F00 /* AppDelegate.h */,
 				EEF6A63E19FE4C4800136F00 /* AppDelegate.m */,
 				EEF6A64019FE4C4800136F00 /* ViewController.h */,
@@ -117,6 +124,17 @@
 				EEF6A65419FE4C4800136F00 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EEF6A65F19FE4C7500136F00 /* YJMenu */ = {
+			isa = PBXGroup;
+			children = (
+				EEF6A66019FE4C7500136F00 /* YJMenu.h */,
+				EEF6A66119FE4C7500136F00 /* YJMenu.m */,
+				EEF6A66219FE4C7500136F00 /* YJMenuItem.h */,
+				EEF6A66319FE4C7500136F00 /* YJMenuItem.m */,
+			);
+			path = YJMenu;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -222,6 +240,8 @@
 				EEF6A64219FE4C4800136F00 /* ViewController.m in Sources */,
 				EEF6A63F19FE4C4800136F00 /* AppDelegate.m in Sources */,
 				EEF6A63C19FE4C4800136F00 /* main.m in Sources */,
+				EEF6A66419FE4C7500136F00 /* YJMenu.m in Sources */,
+				EEF6A66519FE4C7500136F00 /* YJMenuItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
