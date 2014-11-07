@@ -19,6 +19,7 @@ typedef NS_ENUM(NSUInteger, YJMenuStyle) {
 /**
  * new an Menu that contains an array of Menu Items
  * all the items have the same size
+ * There is no padding between the menu item and Separator
  * @param   titles
  *          an array contains all the Items that consist of the menu
  * @param   padding

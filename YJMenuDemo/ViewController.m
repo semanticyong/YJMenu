@@ -21,7 +21,7 @@
     //we are creating 2 separate menus, each has 2 menu items
     //if u want combine them into one, just use the same 'NotificationName'
     
-    //With Separator
+    // YJMenuStyleVertical, With Separator
     UILabel *labelForMenuWithSeparator = [[UILabel alloc] initWithFrame:CGRectMake(30, 100, 150, 30)];
     labelForMenuWithSeparator.text = @"With Separator";
     [self.view addSubview:labelForMenuWithSeparator];
@@ -42,7 +42,7 @@
     menu.layer.borderWidth = 1.0f;
     [self.view addSubview:menu];
     
-    //Without Separator
+    // YJMenuStyleVertical, Without Separator
     UILabel *labelForMenuWithoutSeparator = [[UILabel alloc] initWithFrame:CGRectMake(200, 100, 150, 30)];
     labelForMenuWithoutSeparator.text = @"Without Separator";
     [self.view addSubview:labelForMenuWithoutSeparator];
@@ -59,6 +59,24 @@
     menuWithoutSeparator.layer.borderColor = [UIColor blackColor].CGColor;
     menuWithoutSeparator.layer.borderWidth = 1.0f;
     [self.view addSubview:menuWithoutSeparator];
+    
+    // YJMenuStyleHorizontal, Without Separator
+    UILabel *labelForMenuWithSeparatorHorizontal = [[UILabel alloc] initWithFrame:CGRectMake(30, 260, 150, 30)];
+    labelForMenuWithSeparatorHorizontal.text = @"With Separator";
+    [self.view addSubview:labelForMenuWithSeparatorHorizontal];
+    
+    YJMenu *menuHorizontal = [[YJMenu alloc] initWithMenuFrame:CGRectMake(50, 300, 200, 30)
+                                                     MenuStyle:YJMenuStyleHorizontal
+                                                    ItemTitles:@[@"hi7",@"hi8"]
+                                            ItemSelectedIndexs:@[@(7), @(8)]
+                                         MenuItemSeparatorView:nil
+                                                       BgColor:nil
+                                               SelectedBgColor:[UIColor redColor]
+                                              NotificationName:@"itemSelected13"];
+    
+    menuHorizontal.layer.borderColor = [UIColor blackColor].CGColor;
+    menuHorizontal.layer.borderWidth = 1.0f;
+    [self.view addSubview:menuHorizontal];
     
 }
 
