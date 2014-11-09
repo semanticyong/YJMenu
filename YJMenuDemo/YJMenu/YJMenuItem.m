@@ -8,7 +8,6 @@
 
 #import "YJMenuItem.h"
 
-static NSString *ItemSelectedIndexKey = @"ItemSelectedIndex";
 static NSString *ItemSelectedNotificationName = @"ItemSelectedNotification";
 
 @interface YJMenuItem () {
@@ -77,8 +76,8 @@ static NSString *ItemSelectedNotificationName = @"ItemSelectedNotification";
 
 - (void)handleTapGestureRecognizer:(id)sender
 {
-    NSLog(@"handleTapGestureRecognizer");
-    NSLog(@"%@", sender);
+//    NSLog(@"handleTapGestureRecognizer");
+//    NSLog(@"%@", sender);
     NSDictionary *userInfo = @{ItemSelectedIndexKey: @(self.tag)};
     [[NSNotificationCenter defaultCenter] postNotificationName:_itemSelectedNotificationName object:nil userInfo:userInfo];
     [self setIsSelected:YES];

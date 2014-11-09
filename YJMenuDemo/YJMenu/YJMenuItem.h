@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+static NSString *ItemSelectedIndexKey = @"ItemSelectedIndex";
+
 @interface YJMenuItem : UIView
 
 @property (readonly) BOOL isSelected;
