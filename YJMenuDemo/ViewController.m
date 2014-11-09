@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "YJMenu.h"
+#import "YJMenuItem.h"
 
 @interface ViewController ()
 
@@ -31,12 +32,12 @@
     
     YJMenu *menu = [[YJMenu alloc] initWithMenuFrame:CGRectMake(50, 150, 100, 80)
                                            MenuStyle:YJMenuStyleVertical
-                                          ItemTitles:@[@"hi1",@"hi2"]
+                                          ItemTitles:@[@"MI11",@"MI12"]
                                   ItemSelectedIndexs:@[@(1), @(2)]
                                MenuItemSeparatorView:menuItemSeparatorView
                                              BgColor:nil
                                      SelectedBgColor:[UIColor redColor]
-                                    NotificationName:@"itemSelected12"];
+                                    NotificationName:@"Menu1_itemSelected"];
     
     menu.layer.borderColor = [UIColor blackColor].CGColor;
     menu.layer.borderWidth = 1.0f;
@@ -49,35 +50,105 @@
     
     YJMenu *menuWithoutSeparator = [[YJMenu alloc] initWithMenuFrame:CGRectMake(200, 150, 100, 80)
                                                            MenuStyle:YJMenuStyleVertical
-                                                          ItemTitles:@[@"hi5",@"hi6"]
-                                                  ItemSelectedIndexs:@[@(5), @(6)]
+                                                          ItemTitles:@[@"MI21",@"MI22"]
+                                                  ItemSelectedIndexs:@[@(1), @(2)]
                                                MenuItemSeparatorView:nil
                                                              BgColor:nil
                                                      SelectedBgColor:[UIColor redColor]
-                                                    NotificationName:@"itemSelected56"];
+                                                    NotificationName:@"Menu2_itemSelected"];
     
     menuWithoutSeparator.layer.borderColor = [UIColor blackColor].CGColor;
     menuWithoutSeparator.layer.borderWidth = 1.0f;
     [self.view addSubview:menuWithoutSeparator];
     
     // YJMenuStyleHorizontal, Without Separator
-    UILabel *labelForMenuWithSeparatorHorizontal = [[UILabel alloc] initWithFrame:CGRectMake(30, 260, 150, 30)];
-    labelForMenuWithSeparatorHorizontal.text = @"With Separator";
+    UILabel *labelForMenuWithSeparatorHorizontal = [[UILabel alloc] initWithFrame:CGRectMake(30, 260, 260, 30)];
+    labelForMenuWithSeparatorHorizontal.text = @"Horizontal, Without Separator";
+    labelForMenuWithSeparatorHorizontal.font = [UIFont systemFontOfSize:12];
     [self.view addSubview:labelForMenuWithSeparatorHorizontal];
     
-    YJMenu *menuHorizontal = [[YJMenu alloc] initWithMenuFrame:CGRectMake(50, 300, 200, 30)
+    YJMenu *menuHorizontal = [[YJMenu alloc] initWithMenuFrame:CGRectMake(30, 300, 260, 30)
                                                      MenuStyle:YJMenuStyleHorizontal
-                                                    ItemTitles:@[@"hi7",@"hi8"]
-                                            ItemSelectedIndexs:@[@(7), @(8)]
+                                                    ItemTitles:@[@"MI31",@"MI32",@"MI33"]
+                                            ItemSelectedIndexs:@[@(1), @(2), @(3)]
                                          MenuItemSeparatorView:nil
                                                        BgColor:nil
                                                SelectedBgColor:[UIColor redColor]
-                                              NotificationName:@"itemSelected13"];
+                                              NotificationName:@"Menu3_itemSelected"];
     
     menuHorizontal.layer.borderColor = [UIColor blackColor].CGColor;
     menuHorizontal.layer.borderWidth = 1.0f;
     [self.view addSubview:menuHorizontal];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationRecievedForMenu1:) name:@"Menu1_itemSelected" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationRecievedForMenu2:) name:@"Menu2_itemSelected" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationRecievedForMenu3:) name:@"Menu3_itemSelected" object:nil];
+}
+
+- (void)notificationRecievedForMenu1:(NSNotification *)notification
+{
+    NSDictionary * dict = notification.userInfo;
+    NSNumber *index = dict[ItemSelectedIndexKey];
+    switch ([index integerValue]) {
+        case 1:
+            NSLog(@"MI11 Selected");
+            break;
+            
+        case 2:
+            NSLog(@"MI12 Selected");
+            break;
+            
+        case 3:
+            NSLog(@"MI13 Selected");
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)notificationRecievedForMenu2:(NSNotification *)notification
+{
+    NSDictionary * dict = notification.userInfo;
+    NSNumber *index = dict[ItemSelectedIndexKey];
+    switch ([index integerValue]) {
+        case 1:
+            NSLog(@"MI21 Selected");
+            break;
+            
+        case 2:
+            NSLog(@"MI22 Selected");
+            break;
+            
+        case 3:
+            NSLog(@"MI23 Selected");
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)notificationRecievedForMenu3:(NSNotification *)notification
+{
+    NSDictionary * dict = notification.userInfo;
+    NSNumber *index = dict[ItemSelectedIndexKey];
+    switch ([index integerValue]) {
+        case 1:
+            NSLog(@"MI31 Selected");
+            break;
+            
+        case 2:
+            NSLog(@"MI32 Selected");
+            break;
+            
+        case 3:
+            NSLog(@"MI33 Selected");
+            break;
+            
+        default:
+            break;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
