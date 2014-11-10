@@ -24,92 +24,15 @@
         return nil;
     }
     
-    self = [self initWithFrame:menuframe];
-    
-    if (self) {
-        if ([itemtitles count]) {
-            NSInteger titlesCount = [itemtitles count];
-            
-            CGFloat menuHeight = 0.0f;
-            CGFloat menuWidth = 0.0f;
-            
-            if (menuStyle == YJMenuStyleVertical) {
-                CGFloat menuItemSeparatorHeight = menuItemSeparatorView.frame.size.height;
-                menuHeight = (menuframe.size.height - (titlesCount - 1) * menuItemSeparatorHeight) / titlesCount;
-                menuWidth = menuframe.size.width;
-            }
-            else if (menuStyle == YJMenuStyleHorizontal) {
-                CGFloat menuItemSeparatorWidth = menuItemSeparatorView.frame.size.width;
-                menuHeight = menuframe.size.height;
-                menuWidth = (menuframe.size.width - (titlesCount - 1) * menuItemSeparatorWidth) / titlesCount;
-            }
-            else {
-                //TODO: handle error wrong params, it must be a YJMenuStyle
-            }
-            
-            CGRect menuItemRect = CGRectZero;
-            menuItemRect.size = CGSizeMake(menuWidth, menuHeight);
-            YJMenuItem *menuItem = [[YJMenuItem alloc] initWithItemTitle:itemtitles[0]
-                                                                   Frame:menuItemRect
-                                                                 BgColor:bgColor
-                                                         SelectedBgColor:selectedBgColor
-                                                       ItemSelectedIndex:itemSelectedIndexs[0]
-                                                        NotificationName:notificationName];
-            [self addSubview:menuItem];
-            
-            //do we have at least 2 items?
-            if (titlesCount > 1) {
-                //yes, we have at least 2 items, lets begin with 2nd menu item
-                NSInteger itemIndex = 1;
-                for (itemIndex = 1; itemIndex < titlesCount; itemIndex ++) {
-                    // there may be a separator between 1st item and 2nd item, (2nd and 3rd, and so on)
-                    // lets check it out
-                    
-                    if (menuItemSeparatorView) {
-                        // mI stands for menu Item
-#warning maybe we need to copy the view recursively
-                        UIView *mISeparatorView = [[UIView alloc] initWithFrame:menuItemSeparatorView.frame];
-                        mISeparatorView.backgroundColor = menuItemSeparatorView.backgroundColor;
-                        
-                        // setup frame for Separator
-                        // There is no padding between the menu item and Separator
-                        CGFloat menuItemSeparatorOriginX = 0.0f;
-                        CGFloat menuItemSeparatorOriginY = 0.0f;
-                        
-                        if (menuStyle == YJMenuStyleVertical) {
-                            menuItemSeparatorOriginX = menuItemRect.origin.x;
-                            menuItemSeparatorOriginY = menuItemRect.origin.y + menuItemRect.size.height;
-                        }
-                        else if (menuStyle == YJMenuStyleHorizontal) {
-                            menuItemSeparatorOriginX = menuItemRect.origin.x + menuItemRect.size.width;
-                            menuItemSeparatorOriginY = menuItemRect.origin.y;
-                        }
-                        else {
-                            //TODO: handle error wrong params, it must be a YJMenuStyle
-                        }
-                        
-                        CGFloat menuItemSeparatorSizeWidth = mISeparatorView.frame.size.width;
-                        CGFloat menuItemSeparatorSizeHeight = mISeparatorView.frame.size.height;
-                        mISeparatorView.frame = CGRectMake(menuItemSeparatorOriginX, menuItemSeparatorOriginY, menuItemSeparatorSizeWidth, menuItemSeparatorSizeHeight);
-                        
-                        [self addSubview:mISeparatorView];
-                    }
-                    
-                    menuItemRect = [self setNextItemWithFrame:menuItemRect
-                                                    MenuStyle:menuStyle
-                                                    ItemTitle:itemtitles[itemIndex]
-                                            ItemSelectedIndex:itemSelectedIndexs[itemIndex]
-                                        MenuItemSeparatorView:menuItemSeparatorView
-                                                      BgColor:bgColor
-                                              SelectedBgColor:selectedBgColor
-                                             NotificationName:notificationName];
-                }
-                
-            }
-        }
-        
-    }
-
+    self = [self initWithMenuFrame:menuframe
+                         MenuStyle:menuStyle
+                        ItemTitles:itemtitles
+                ItemSelectedIndexs:itemSelectedIndexs
+                         ItemIcons:nil
+             MenuItemSeparatorView:menuItemSeparatorView
+                           BgColor:bgColor
+                   SelectedBgColor:selectedBgColor
+                  NotificationName:notificationName];
     
     return self;
 }
@@ -148,6 +71,129 @@
     return self;
 }
 
+- (YJMenu *)initWithMenuFrame:(CGRect)menuframe
+                    MenuStyle:(YJMenuStyle)menuStyle
+                   ItemTitles:(NSArray *)itemTitles
+           ItemSelectedIndexs:(NSArray *)itemSelectedIndexs
+                    ItemIcons:(NSArray *)itemIcons
+        MenuItemSeparatorView:(UIView *)menuItemSeparatorView
+                      BgColor:(UIColor *)bgColor
+              SelectedBgColor:(UIColor *)selectedBgColor
+             NotificationName:(NSString *)notificationName
+{
+    if (!itemIcons) {
+        if ([itemTitles count] != [itemSelectedIndexs count]) {
+            return nil;
+        }
+    }
+    else {
+        if ([itemTitles count] != [itemSelectedIndexs count] || [itemSelectedIndexs count] != [itemIcons count]) {
+            return nil;
+        }
+    }
+    
+    self = [self initWithFrame:menuframe];
+    
+    if (!self) {
+        return nil;
+    }
+    
+    if ([itemTitles count]) {
+        NSInteger titlesCount = [itemTitles count];
+        
+        CGFloat menuHeight = 0.0f;
+        CGFloat menuWidth = 0.0f;
+        
+        if (menuStyle == YJMenuStyleVertical) {
+            CGFloat menuItemSeparatorHeight = menuItemSeparatorView.frame.size.height;
+            menuHeight = (menuframe.size.height - (titlesCount - 1) * menuItemSeparatorHeight) / titlesCount;
+            menuWidth = menuframe.size.width;
+        }
+        else if (menuStyle == YJMenuStyleHorizontal) {
+            CGFloat menuItemSeparatorWidth = menuItemSeparatorView.frame.size.width;
+            menuHeight = menuframe.size.height;
+            menuWidth = (menuframe.size.width - (titlesCount - 1) * menuItemSeparatorWidth) / titlesCount;
+        }
+        else {
+            //TODO: handle error wrong params, it must be a YJMenuStyle
+        }
+        
+        CGRect menuItemRect = CGRectZero;
+        menuItemRect.size = CGSizeMake(menuWidth, menuHeight);
+        
+        UIImage *itemIcon = nil;
+        if (itemIcons) {
+            itemIcon = itemIcons[0];
+        }
+        
+        YJMenuItem *menuItem = [[YJMenuItem alloc] initWithItemTitle:itemTitles[0]
+                                                                Icon:itemIcon
+                                                               Frame:menuItemRect
+                                                             BgColor:bgColor
+                                                     SelectedBgColor:selectedBgColor
+                                                   ItemSelectedIndex:itemSelectedIndexs[0]
+                                                    NotificationName:notificationName];
+        [self addSubview:menuItem];
+        
+        //do we have at least 2 items?
+        if (titlesCount > 1) {
+            //yes, we have at least 2 items, lets begin with 2nd menu item
+            NSInteger itemIndex = 1;
+            for (itemIndex = 1; itemIndex < titlesCount; itemIndex ++) {
+                // there may be a separator between 1st item and 2nd item, (2nd and 3rd, and so on)
+                // lets check it out
+                
+                if (menuItemSeparatorView) {
+                    // mI stands for menu Item
+#warning maybe we need to copy the view recursively
+                    UIView *mISeparatorView = [[UIView alloc] initWithFrame:menuItemSeparatorView.frame];
+                    mISeparatorView.backgroundColor = menuItemSeparatorView.backgroundColor;
+                    
+                    // setup frame for Separator
+                    // There is no padding between the menu item and Separator
+                    CGFloat menuItemSeparatorOriginX = 0.0f;
+                    CGFloat menuItemSeparatorOriginY = 0.0f;
+                    
+                    if (menuStyle == YJMenuStyleVertical) {
+                        menuItemSeparatorOriginX = menuItemRect.origin.x;
+                        menuItemSeparatorOriginY = menuItemRect.origin.y + menuItemRect.size.height;
+                    }
+                    else if (menuStyle == YJMenuStyleHorizontal) {
+                        menuItemSeparatorOriginX = menuItemRect.origin.x + menuItemRect.size.width;
+                        menuItemSeparatorOriginY = menuItemRect.origin.y;
+                    }
+                    else {
+                        //TODO: handle error wrong params, it must be a YJMenuStyle
+                    }
+                    
+                    CGFloat menuItemSeparatorSizeWidth = mISeparatorView.frame.size.width;
+                    CGFloat menuItemSeparatorSizeHeight = mISeparatorView.frame.size.height;
+                    mISeparatorView.frame = CGRectMake(menuItemSeparatorOriginX, menuItemSeparatorOriginY, menuItemSeparatorSizeWidth, menuItemSeparatorSizeHeight);
+                    
+                    [self addSubview:mISeparatorView];
+                }
+                
+                if (itemIcons) {
+                    itemIcon = itemIcons[itemIndex];
+                }
+                
+                menuItemRect = [self setNextItemWithFrame:menuItemRect
+                                                MenuStyle:menuStyle
+                                                ItemTitle:itemTitles[itemIndex]
+                                        ItemSelectedIndex:itemSelectedIndexs[itemIndex]
+                                                 ItemIcon:itemIcon
+                                    MenuItemSeparatorView:menuItemSeparatorView
+                                                  BgColor:bgColor
+                                          SelectedBgColor:selectedBgColor
+                                         NotificationName:notificationName];
+            }
+            
+        }
+    }
+
+    return self;
+}
+
 - (CGRect)setNextItemWithFrame:(CGRect)frame
                      MenuStyle:(YJMenuStyle)menuStyle
                      ItemTitle:(NSString *)itemTitle
@@ -178,6 +224,7 @@
                      MenuStyle:(YJMenuStyle)menuStyle
                      ItemTitle:(NSString *)itemTitle
              ItemSelectedIndex:(NSNumber *)itemSelectedIndex
+                      ItemIcon:(UIImage *)itemIcon
          MenuItemSeparatorView:(UIView *)menuItemSeparatorView
                        BgColor:(UIColor *)bgColor
                SelectedBgColor:(UIColor *)selectedBgColor
@@ -194,6 +241,7 @@
     }
     
     YJMenuItem *menuItem = [[YJMenuItem alloc] initWithItemTitle:itemTitle
+                                                            Icon:itemIcon
                                                            Frame:frame
                                                          BgColor:bgColor
                                                  SelectedBgColor:selectedBgColor

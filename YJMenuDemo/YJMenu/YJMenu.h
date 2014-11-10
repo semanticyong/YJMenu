@@ -19,6 +19,7 @@ typedef NS_ENUM(NSUInteger, YJMenuStyle) {
 /**
  * new an Menu that contains an array of Menu Items
  * all the items have the same size
+ * please set menuItemSeparatorView as nil temporarily
  * There is no padding between the menu item and Separator
  * @param   titles
  *          an array contains all the Items that consist of the menu
@@ -43,6 +44,16 @@ typedef NS_ENUM(NSUInteger, YJMenuStyle) {
                       BgColor:(UIColor *)bgColor
               SelectedBgColor:(UIColor *)selectedBgColor
                  PaddingColor:(UIColor *)paddingColor
+             NotificationName:(NSString *)notificationName;
+
+- (YJMenu *)initWithMenuFrame:(CGRect)menuframe
+                    MenuStyle:(YJMenuStyle)menuStyle
+                   ItemTitles:(NSArray *)itemTitles
+           ItemSelectedIndexs:(NSArray *)itemSelectedIndexs
+                    ItemIcons:(NSArray *)itemIcons
+        MenuItemSeparatorView:(UIView *)menuItemSeparatorView
+                      BgColor:(UIColor *)bgColor
+              SelectedBgColor:(UIColor *)selectedBgColor
              NotificationName:(NSString *)notificationName;
 
 @end

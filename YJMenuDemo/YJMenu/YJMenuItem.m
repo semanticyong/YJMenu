@@ -23,18 +23,83 @@ static NSString *ItemSelectedNotificationName = @"ItemSelectedNotification";
                           BgColor:(UIColor *)bgColor
                   SelectedBgColor:(UIColor *)selectedBgColor
                 ItemSelectedIndex:(NSNumber *)itemSelectedIndex
-                 NotificationName:(NSString *)name
+                 NotificationName:(NSString *)notificationName
 {
-    
+    self = [self initWithItemTitle:title
+                              Icon:nil
+                             Frame:frame
+                           BgColor:bgColor
+                   SelectedBgColor:selectedBgColor
+                 ItemSelectedIndex:itemSelectedIndex
+                  NotificationName:notificationName];
+    return self;
+}
+
+- (YJMenuItem *)initWithItemTitle:(NSString *)title
+                             Icon:(UIImage *)icon
+                            Frame:(CGRect)frame
+                          BgColor:(UIColor *)bgColor
+                  SelectedBgColor:(UIColor *)selectedBgColor
+                ItemSelectedIndex:(NSNumber *)itemSelectedIndex
+                 NotificationName:(NSString *)notificationName
+{
     _selectedBgColor = selectedBgColor;
-    self = [self initWithFrame:frame];
-    CGRect lblFrame = frame;
-    lblFrame.origin = CGPointMake(0, 0);
-    UILabel *label = [[UILabel alloc] initWithFrame:lblFrame];
-    label.text = title;
-    label.textColor = [UIColor blackColor];
-    label.backgroundColor = [UIColor clearColor];
     
+    self = [self initWithFrame:frame];
+    
+    CGRect itemFrame = frame;
+    UILabel *titleLabel = [[UILabel alloc] init];
+    CGRect labelRect = frame;
+    
+    if (icon) {
+        UIImageView *iconImgView = [[UIImageView alloc] initWithImage:icon];
+        CGRect imgViewRect = iconImgView.frame;
+        CGSize imgViewSize = iconImgView.frame.size;
+        
+        NSDictionary *attrDict = @{NSFontAttributeName : [titleLabel font]};
+        CGFloat titleWidth = [title sizeWithAttributes:attrDict].width;
+        labelRect.size = CGSizeMake(titleWidth, frame.size.height);
+
+        if ((imgViewSize.width + titleWidth) > itemFrame.size.width || imgViewSize.height > itemFrame.size.height) {
+            // Does not have enough space to put Icon And Title
+            // TODO: pass more error info
+            return nil;
+        }
+        
+        CGFloat paddingBetweenIconAndTitle = itemFrame.size.width/20;
+        CGFloat paddingBetweenIconAndTop = (frame.size.height - imgViewSize.height) / 2;
+        CGFloat paddingBetweenIconAndLeft = 0.0f;
+        
+        if ((imgViewSize.width + titleWidth + paddingBetweenIconAndTitle) > itemFrame.size.width) {
+            // Does not have more space for default padding Between Icon And Title
+            // We have to make an ugly padding
+            paddingBetweenIconAndLeft = (itemFrame.size.width - (imgViewSize.width + titleWidth)) / 3;
+            labelRect.origin.x = paddingBetweenIconAndLeft * 2 + imgViewSize.width;
+        }
+        else {
+            paddingBetweenIconAndLeft = (itemFrame.size.width - (imgViewSize.width + titleWidth + paddingBetweenIconAndTitle)) / 2;
+            labelRect.origin.x = paddingBetweenIconAndLeft + imgViewSize.width + paddingBetweenIconAndTitle;
+        }
+        
+        imgViewRect.origin.x = paddingBetweenIconAndLeft;
+        imgViewRect.origin.y = paddingBetweenIconAndTop;
+        labelRect.origin.y = 0.0f;
+        iconImgView.frame = imgViewRect;
+        [self addSubview:iconImgView];
+    }
+    else {
+        //does not have an icon, make the label be full of the menu item
+        labelRect = frame;
+        labelRect.origin = CGPointMake(0, 0);
+    }
+    
+    titleLabel.frame = labelRect;
+    titleLabel.text = title;
+    titleLabel.textColor = [UIColor blackColor];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:titleLabel];
+
     if (bgColor) {
         _bgColor = bgColor;
         self.backgroundColor = bgColor;
@@ -44,15 +109,12 @@ static NSString *ItemSelectedNotificationName = @"ItemSelectedNotification";
         self.tag = [itemSelectedIndex integerValue];
     }
     
-    label.textAlignment = NSTextAlignmentCenter;
-    [self addSubview:label];
-    
     UITapGestureRecognizer *tapGR =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGestureRecognizer:)];
     [self addGestureRecognizer:tapGR];
     
     _itemSelectedNotificationName = nil;
-    if (name) {
-        _itemSelectedNotificationName = name;
+    if (notificationName) {
+        _itemSelectedNotificationName = notificationName;
     }
     else {
         _itemSelectedNotificationName = ItemSelectedNotificationName;
@@ -61,7 +123,6 @@ static NSString *ItemSelectedNotificationName = @"ItemSelectedNotification";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationRecieved:) name:_itemSelectedNotificationName object:nil];
     
     [self setIsSelected:NO];
-    
     return self;
 }
 
