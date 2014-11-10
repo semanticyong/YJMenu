@@ -30,4 +30,13 @@ static NSString *ItemSelectedIndexKey = @"ItemSelectedIndex";
                   SelectedBgColor:(UIColor *)selectedBgColor
                 ItemSelectedIndex:(NSNumber *)itemSelectedIndex
                  NotificationName:(NSString *)name;
+
+- (YJMenuItem *)initWithItemTitle:(NSString *)title
+                             Icon:(UIImage *)icon
+                            Frame:(CGRect)frame
+                          BgColor:(UIColor *)bgColor
+                  SelectedBgColor:(UIColor *)selectedBgColor
+                ItemSelectedIndex:(NSNumber *)itemSelectedIndex
+                 NotificationName:(NSString *)notificationName;
+
 @end
